@@ -3,7 +3,6 @@ package com.example.parsetagram5;
 import android.app.Application;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,13 +28,11 @@ public class ParseApplication extends Application {
         // any network interceptors must be added with the Configuration Builder given this syntax
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("chibueze-fbu-parsetagram") // should correspond to APP_ID env variable
-                .clientKey("chibueze-ejiofor")  // set explicitly unless clientKey is explicitly configured on Parse server
+                .clientKey("@strings/master_key")  // set explicitly unless clientKey is explicitly configured on Parse server
                 .clientBuilder(builder)
                 .server("https://chibueze-fbu-parsetagram.herokuapp.com/parse").build());
-        // New test creation of object below
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("coo", "ddd");
-        testObject.saveInBackground();
+
+
 
 
     }
