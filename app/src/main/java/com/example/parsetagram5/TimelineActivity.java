@@ -16,12 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.parsetagram5.fragments.ComposeFragment;
 import com.example.parsetagram5.fragments.TimelineFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
 
 import java.io.File;
-import java.util.List;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeFragment.OnComposeFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener {
     public final String APP_TAG = "Parsetagram5";
@@ -134,20 +130,4 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
 
     }
 
-    private void queryPosts() {
-        ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
-        postQuery.include(Post.KEY_USER);
-        postQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(APP_TAG, e.toString());
-                }
-
-                for (int i = 0; i < posts.size(); i++) {
-                    Log.d(APP_TAG, "Post: " + posts.get(i));
-                }
-            }
-        });
-    }
 }

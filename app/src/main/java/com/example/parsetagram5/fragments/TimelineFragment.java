@@ -68,12 +68,11 @@ public class TimelineFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
         rvTimeline = view.findViewById(R.id.rvTimeline);
-        queryPosts(true);
         timelineAdapter = new TimelineAdapter(posts);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        linearLayoutManager.setReverseLayout(true);
         rvTimeline.setLayoutManager(linearLayoutManager);
         rvTimeline.setAdapter(timelineAdapter);
+        queryPosts(true);
         swipeContainer = ((SwipeRefreshLayout)view.findViewById(R.id.swipeContainer));
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,14 +124,16 @@ public class TimelineFragment extends Fragment {
                     Log.e(APP_TAG, e.toString());
                 } else {
                     if (!isFirstTime) {
-                        for (int i = posts.size(); i < newPosts.size() - 1; i++) {
+                        for (int i = (newPosts.size() - posts.size()) - 1; i >= 0; i--) {
                             posts.add(newPosts.get(i));
                             timelineAdapter.notifyItemChanged(i);
                         }
                     } else {
                         posts.clear();
-                        posts.addAll(newPosts);
-                        timelineAdapter.notifyDataSetChanged();
+                        for (int i = newPosts.size() - 1; i >= 0; i--) {
+                            posts.add(newPosts.get(i));
+                            timelineAdapter.notifyItemChanged(i);
+                        }
                     }
                 }
             }
