@@ -74,6 +74,7 @@ public class TimelineFragment extends Fragment {
         rvTimeline.setAdapter(timelineAdapter);
         queryPosts(true);
         swipeContainer = ((SwipeRefreshLayout)view.findViewById(R.id.swipeContainer));
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

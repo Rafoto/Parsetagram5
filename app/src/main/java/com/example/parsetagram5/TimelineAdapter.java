@@ -20,7 +20,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     private List<Post> posts;
     private Context context;
     ViewHolder viewHolder;
-
     public TimelineAdapter(List<Post> posts) {
         this.posts = posts;
 
@@ -44,7 +43,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.tvCaption.setText(post.getDescription());
         holder.tvDate.setText(post.getDate());
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivImage);
-        holder.ivImage.setOnClickListener(new View.OnClickListener() {
+        holder.tvUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);
@@ -55,6 +54,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         if (post.getUser().get("profilePicture") != null) {
             Glide.with(context).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(holder.ivUsericon);
         }
+        holder.ivComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("post", post);
+                context.startActivity(intent);
+
+            }
+        });
 
 
     }

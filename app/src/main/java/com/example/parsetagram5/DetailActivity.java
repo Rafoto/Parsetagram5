@@ -1,6 +1,8 @@
 package com.example.parsetagram5;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +48,15 @@ public class DetailActivity extends AppCompatActivity {
         if (post.getUser().get("profilePicture") != null) {
             Glide.with(this).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(ivUsericon);
         }
+        ivComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), CommentActivity.class);
+                intent.putExtra("post", post);
+                view.getContext().startActivity(intent);
+
+            }
+        });
 
     }
 }
