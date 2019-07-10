@@ -1,6 +1,7 @@
 package com.example.parsetagram5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.tvCaption.setText(post.getDescription());
         holder.tvDate.setText(post.getDate());
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivImage);
+        holder.ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("post", post);
+                context.startActivity(intent);
+            }
+        });
         if (post.getUser().get("profilePicture") != null) {
             Glide.with(context).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(holder.ivUsericon);
         }

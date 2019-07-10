@@ -98,7 +98,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                     public void done(ParseException e) {
                         if (e != null) {
                             e.printStackTrace();
-                            return;
                         } else {
                             Log.d(APP_TAG, "Successful Profile Picture");
                         }
