@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.parsetagram5.EndlessRecyclerViewScrollListener;
 import com.example.parsetagram5.Post;
 import com.example.parsetagram5.R;
 import com.example.parsetagram5.TimelineAdapter;
@@ -36,6 +38,7 @@ public class TimelineFragment extends Fragment {
     TimelineAdapter timelineAdapter;
     List<Post> posts;
     Context context;
+    SwipeRefreshLayout swipeContainer;
     private OnFragmentInteractionListener mListener;
 
     public TimelineFragment() {
@@ -65,12 +68,26 @@ public class TimelineFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
         rvTimeline = view.findViewById(R.id.rvTimeline);
-        queryPosts();
+        queryPosts(true);
         timelineAdapter = new TimelineAdapter(posts);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setReverseLayout(true);
         rvTimeline.setLayoutManager(linearLayoutManager);
         rvTimeline.setAdapter(timelineAdapter);
+        swipeContainer = ((SwipeRefreshLayout)view.findViewById(R.id.swipeContainer));
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeContainer.setRefreshing(false);
+                queryPosts(true);
+            }
+        });
+        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) rvTimeline.getLayoutManager()) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryPosts(false);
+            }
+        });
         return view;
     }
 
@@ -98,7 +115,7 @@ public class TimelineFragment extends Fragment {
         mListener = null;
     }
 
-    private void queryPosts() {
+    private void queryPosts(final boolean isFirstTime) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
         postQuery.findInBackground(new FindCallback<Post>() {
@@ -107,9 +124,17 @@ public class TimelineFragment extends Fragment {
                 if (e != null) {
                     Log.e(APP_TAG, e.toString());
                 } else {
-                    posts.addAll(newPosts);
+                    if (!isFirstTime) {
+                        for (int i = posts.size(); i < newPosts.size() - 1; i++) {
+                            posts.add(newPosts.get(i));
+                            timelineAdapter.notifyItemChanged(i);
+                        }
+                    } else {
+                        posts.clear();
+                        posts.addAll(newPosts);
+                        timelineAdapter.notifyDataSetChanged();
+                    }
                 }
-                timelineAdapter.notifyDataSetChanged();
             }
         });
     }
