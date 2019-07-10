@@ -35,8 +35,8 @@ import java.util.List;
 public class TimelineFragment extends Fragment {
     public final String APP_TAG = "Parsetagram5";
     RecyclerView rvTimeline;
-    TimelineAdapter timelineAdapter;
-    List<Post> posts;
+    protected TimelineAdapter timelineAdapter;
+    protected List<Post> posts;
     Context context;
     SwipeRefreshLayout swipeContainer;
     private OnFragmentInteractionListener mListener;
@@ -114,9 +114,10 @@ public class TimelineFragment extends Fragment {
         mListener = null;
     }
 
-    private void queryPosts(final boolean isFirstTime) {
+    protected void queryPosts(final boolean isFirstTime) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
         postQuery.include(Post.KEY_USER);
+        postQuery.addDescendingOrder(Post.DATE);
         postQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> newPosts, ParseException e) {
@@ -124,20 +125,19 @@ public class TimelineFragment extends Fragment {
                     Log.e(APP_TAG, e.toString());
                 } else {
                     if (!isFirstTime) {
-                        for (int i = (newPosts.size() - posts.size()) - 1; i >= 0; i--) {
+                        for (int i = posts.size(); i < newPosts.size(); i++) {
                             posts.add(newPosts.get(i));
                             timelineAdapter.notifyItemChanged(i);
                         }
                     } else {
                         posts.clear();
-                        for (int i = newPosts.size() - 1; i >= 0; i--) {
-                            posts.add(newPosts.get(i));
-                            timelineAdapter.notifyItemChanged(i);
+                        posts.addAll(newPosts);
+                        timelineAdapter.notifyDataSetChanged();
                         }
                     }
                 }
             }
-        });
+        );
     }
 
 
