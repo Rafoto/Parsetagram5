@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -109,7 +110,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             }
         });
         if (post.getUser().get("profilePicture") != null) {
-            Glide.with(context).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(holder.ivUsericon);
+            Glide.with(context).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).apply(RequestOptions.circleCropTransform()).into(holder.ivUsericon);
         }
         holder.ivComment.setOnClickListener(new View.OnClickListener() {
             @Override

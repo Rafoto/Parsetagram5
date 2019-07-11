@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -75,7 +76,10 @@ public class DetailActivity extends AppCompatActivity {
         rvComments.setAdapter(adapter);
         Glide.with(this).load(post.getImage().getUrl()).into(ivImage);
         if (post.getUser().get("profilePicture") != null) {
-            Glide.with(this).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(ivUsericon);
+            Glide.with(this)
+                    .load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(ivUsericon);
         }
         updateLikes();
         ivLike.setOnClickListener(new View.OnClickListener() {

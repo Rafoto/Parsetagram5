@@ -18,7 +18,6 @@ import com.parse.SignUpCallback;
 public class MainActivity extends AppCompatActivity {
     TextView tvUsername;
     TextView tvPassword;
-    TextView tvEmail;
     Button btnLogin;
     Button btnSignup;
     Context context;
@@ -41,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private void showLoginScreen() {
         setContentView(R.layout.activity_main);
         tvUsername = findViewById(R.id.tvUsername);
-        tvEmail = findViewById(R.id.tvEmail);
         tvPassword = findViewById(R.id.tvPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);

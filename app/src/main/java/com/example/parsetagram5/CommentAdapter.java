@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -46,7 +47,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.tvCaption.setText(comment.getString("description"));
         holder.tvDate.setText(comment.getCreatedAt().toString());
         if (((ParseUser) comment.get("user")).get("profilePicture") != null) {
-            Glide.with(context).load(((ParseFile) (((ParseUser) comment.get("user")).get("profilePicture"))).getUrl()).into(holder.ivUsericon);
+            Glide.with(context).load(((ParseFile) (((ParseUser) comment.get("user")).get("profilePicture"))).getUrl()).apply(RequestOptions.circleCropTransform()).into(holder.ivUsericon);
         }
 
     }

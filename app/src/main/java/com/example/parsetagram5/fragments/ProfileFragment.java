@@ -1,5 +1,6 @@
 package com.example.parsetagram5.fragments;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
@@ -29,6 +30,7 @@ public class ProfileFragment extends TimelineFragment {
     @Override
     protected void queryPosts(final boolean isFirstTime) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);
+        Intent f = new Intent();
         postQuery.include(Post.KEY_USER);
         postQuery.setLimit(20);
         postQuery.addDescendingOrder(Post.DATE);
