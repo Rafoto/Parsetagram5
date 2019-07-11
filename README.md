@@ -40,8 +40,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. I could have implemented more inter-profile interaction.
+2. I could have implemented photo editing or filters.
 
 ## Video Walkthrough
 
@@ -61,6 +61,7 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 ## Notes
 
 Describe any challenges encountered while building the app.
+Working with parseserver, reading parse's api, dealing with fragments, dealing with the camera.
 
 ## License
 
