@@ -2,6 +2,7 @@ package com.example.parsetagram5;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +35,10 @@ public class DetailActivity extends AppCompatActivity {
     public TextView tvComments;
     public RecyclerView rvComments;
     public CommentAdapter adapter;
+
     Post post;
     List<ParseObject> comments;
+    List<Like> likes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         tvDate.setText(post.getDate());
         comments = new ArrayList<ParseObject>();
         setComments(post);
+        likes = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvComments.setLayoutManager(linearLayoutManager);
         adapter = new CommentAdapter(comments);
@@ -63,6 +69,57 @@ public class DetailActivity extends AppCompatActivity {
         if (post.getUser().get("profilePicture") != null) {
             Glide.with(this).load(((ParseFile) (post.getUser().get("profilePicture"))).getUrl()).into(ivUsericon);
         }
+        updateLikes();
+        ivLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < likes.size(); i++) {
+                    if (((ParseUser) likes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        likes.get(i).deleteInBackground();
+                        updateLikes();
+                        return;
+                    }
+                }
+                Like like = new Like();
+                like.setUser(ParseUser.getCurrentUser());
+                like.setPost(post);
+                like.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            return;
+                        } else {
+                            Log.d("DETAIL_ACTIVITY", "Success");
+                            updateLikes();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void updateLikes() {
+        ParseQuery<Like> query = new ParseQuery<Like>(Like.class);
+        query.whereEqualTo(Like.POST, post);
+
+        query.findInBackground(new FindCallback<Like>() {
+            @Override
+            public void done(List<Like> newLikes, ParseException e) {
+                if (e != null) {
+                    Log.e("DetailActivity", e.toString());
+                } else {
+                    Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart).into(ivLike);
+                    for (int i = 0; i < newLikes.size(); i++) {
+                        if (((ParseUser) newLikes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                            Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart_active).into(ivLike);
+                        }
+                    }
+                    tvLikes.setText(String.valueOf(newLikes.size()));
+                    likes = newLikes;
+                }
+            }
+        });
 
     }
 
@@ -79,6 +136,7 @@ public class DetailActivity extends AppCompatActivity {
                                                Log.e("DetailActivity", e.toString());
                                            } else {
                                                    comments.addAll(newParseComments);
+                                                   tvComments.setText(String.valueOf(comments.size()));
                                                    adapter.notifyDataSetChanged();
                                                }
                                            }

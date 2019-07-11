@@ -2,6 +2,7 @@ package com.example.parsetagram5;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -36,13 +41,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         // get the data according to position
         final Post post = posts.get(position);
         holder.tvUsername.setText(post.getUser().getUsername());
         holder.tvCaption.setText(post.getDescription());
         holder.tvDate.setText(post.getDate());
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivImage);
+        ParseQuery<Like> query = new ParseQuery<Like>(Like.class);
+        query.whereEqualTo(Like.POST, post);
+        query.findInBackground(new FindCallback<Like>() {
+            @Override
+            public void done(List<Like> newLikes, ParseException e) {
+                if (e != null) {
+                    Log.e("DetailActivity", e.toString());
+                } else {
+                    Glide.with(holder.ivLike.getContext()).load(R.drawable.ufi_heart).into(holder.ivLike);
+                    for (int i = 0; i < newLikes.size(); i++) {
+                        if (((ParseUser) newLikes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                            Glide.with(holder.ivLike.getContext()).load(R.drawable.ufi_heart_active).into(holder.ivLike);
+                        }
+                    }
+                }
+            }
+        });
+
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
