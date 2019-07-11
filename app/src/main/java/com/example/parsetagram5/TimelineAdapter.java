@@ -130,10 +130,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         return posts.size();
     }
 
-    public void clear() {
-        posts.clear();
-        notifyDataSetChanged();
-    }
 
     public void updateLikes(Post post, final List<Like> likes, final ImageView ivLike) {
         ParseQuery<Like> query = new ParseQuery<Like>(Like.class);
