@@ -82,6 +82,16 @@ public class DetailActivity extends AppCompatActivity {
                     .into(ivUsericon);
         }
         updateLikes();
+        ivComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ivComment.getContext(), CommentActivity.class);
+                intent.putExtra("post", post);
+                ivComment.getContext().startActivity(intent);
+
+            }
+        });
+
         ivLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
