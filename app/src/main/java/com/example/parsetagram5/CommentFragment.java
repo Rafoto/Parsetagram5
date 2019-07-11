@@ -29,11 +29,11 @@ import com.parse.SaveCallback;
  * create an instance of this fragment.
  */
 public class CommentFragment extends DialogFragment {
-    private OnCommentFragmentInteractionListener mListener;
     Button btnBack;
     Button btnComment;
     EditText editComment;
     Post post;
+    private OnCommentFragmentInteractionListener mListener;
 
     public CommentFragment() {
         // Required empty public constructor
@@ -105,7 +105,6 @@ public class CommentFragment extends DialogFragment {
     public void setPost(Post post) {
         this.post = post;
     }
-
 
 
     // TODO: Rename method, update argument and hook method into UI event

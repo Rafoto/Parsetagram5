@@ -21,6 +21,10 @@ public class ParseComment extends ParseObject {
         return getString(KEY_DESCRIPTION);
     }
 
+    public void setDescription(String description) {
+        put(KEY_DESCRIPTION, description);
+    }
+
     public String getDate() {
         return String.valueOf(getCreatedAt());
     }
@@ -31,10 +35,6 @@ public class ParseComment extends ParseObject {
 
     public void setPost(Post post) {
         put("post", post);
-    }
-
-    public void setDescription(String description) {
-        put(KEY_DESCRIPTION, description);
     }
 
     public ParseUser getUser() {

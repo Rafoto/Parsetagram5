@@ -31,14 +31,14 @@ import com.parse.SaveCallback;
 import java.io.File;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeFragment.OnComposeFragmentInteractionListener, TimelineFragment.OnFragmentInteractionListener, ProfileFragment.OnProfileFragmentInteractionListener {
-    public final String APP_TAG = "Parsetagram5";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
     public final static int PROFILE_IMAGE_ACTIVITY_REQUEST_CODE = 583;
-    public String photoFileName = "photo.jpg";
     public static final int RESULT_OK = -1;
+    public final String APP_TAG = "Parsetagram5";
+    public String photoFileName = "photo.jpg";
+    Toolbar toolbar;
     private File profilePhotoFile;
     private Context context;
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,33 +55,32 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
         final Fragment fragment2 = new TimelineFragment();
         final Fragment fragment3 = new ProfileFragment();
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                switch (item.getItemId()) {
-                    case R.id.btnPost:
-                        fragment = fragment1;
-                        break;
-                    case R.id.btnHome:
-                        fragment = fragment2;
-                        break;
-                    case R.id.btnLogin:
-                        default:
-                        fragment = fragment3;
-                }
-                fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
-            }
-        }
+                                                                     @Override
+                                                                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                                                                         Fragment fragment;
+                                                                         switch (item.getItemId()) {
+                                                                             case R.id.btnPost:
+                                                                                 fragment = fragment1;
+                                                                                 break;
+                                                                             case R.id.btnHome:
+                                                                                 fragment = fragment2;
+                                                                                 break;
+                                                                             case R.id.btnLogin:
+                                                                             default:
+                                                                                 fragment = fragment3;
+                                                                         }
+                                                                         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                                                                         return true;
+                                                                     }
+                                                                 }
         );
 
 
-
-
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -89,7 +88,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeFragme
                 ComposeFragment fragment = (ComposeFragment) getSupportFragmentManager().findFragmentById(R.id.flContainer);
                 fragment.onPhotoTaken();
 
-            } else if (requestCode == PROFILE_IMAGE_ACTIVITY_REQUEST_CODE){
+            } else if (requestCode == PROFILE_IMAGE_ACTIVITY_REQUEST_CODE) {
                 ParseFile parseFile = new ParseFile(profilePhotoFile);
                 ParseUser user = ParseUser.getCurrentUser();
                 user.put("profilePicture", parseFile);

@@ -41,11 +41,13 @@ import java.io.File;
  * create an instance of this fragment.
  */
 public class ComposeFragment extends Fragment {
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public final static int RESULT_OK = -1;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public final String APP_TAG = "Parsetagram5";
-    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
-    public final static int RESULT_OK = -1;
     String photoFileName = "sample";
     File photoFile;
     Context context;
@@ -54,10 +56,6 @@ public class ComposeFragment extends Fragment {
     EditText editCaption;
     Bitmap takenImage;
     ParseFile parseFile;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     // TODO: Rename and change types of parameters
     private String username;
     private String password;
@@ -170,21 +168,6 @@ public class ComposeFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnComposeFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onComposeFragmentInteraction();
-    }
-
     public void onPhotoTaken() {
         // by this point we have the camera photo on disk
         // RESIZE BITMAP, see section below
@@ -192,8 +175,7 @@ public class ComposeFragment extends Fragment {
         Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(takenImage, editCaption.getMaxWidth());
         parseFile = new ParseFile(photoFile);
         ivCamera.setImageBitmap(takenImage);
-        }
-
+    }
 
     // Returns the File for a photo stored on disk given the fileName
     public File getPhotoFileUri(String fileName) {
@@ -231,6 +213,20 @@ public class ComposeFragment extends Fragment {
             // Start the image capture intent to take photo
             getActivity().startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnComposeFragmentInteractionListener {
+        void onComposeFragmentInteraction();
     }
 
 

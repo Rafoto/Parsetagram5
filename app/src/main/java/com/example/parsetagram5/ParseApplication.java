@@ -37,7 +37,5 @@ public class ParseApplication extends Application {
                 .server("https://chibueze-fbu-parsetagram.herokuapp.com/parse").build());
 
 
-
-
     }
 }

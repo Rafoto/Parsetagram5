@@ -19,16 +19,20 @@ public class Post extends ParseObject {
         return getParseFile("media");
     }
 
+    public void setMedia(ParseFile parseFile) {
+        put("media", parseFile);
+    }
+
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
     }
 
-    public String getDate() {
-        return String.valueOf(getCreatedAt());
-    }
-
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
+    }
+
+    public String getDate() {
+        return String.valueOf(getCreatedAt());
     }
 
     public ParseFile getImage() {
@@ -46,13 +50,11 @@ public class Post extends ParseObject {
     public void setUser(ParseUser parseUser) {
         put(KEY_USER, parseUser);
     }
-    public void setMedia(ParseFile parseFile) {
-        put("media", parseFile);
-    }
 
     public void addLike(ParseUser user) {
 
     }
+
     public void setRelation(ParseRelation relation) {
         put("likes", relation);
     }

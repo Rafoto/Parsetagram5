@@ -21,6 +21,7 @@ public class CommentActivity extends AppCompatActivity {
     EditText editComment;
     Post post;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

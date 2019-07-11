@@ -82,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 for (int i = 0; i < likes.size(); i++) {
-                    if (((ParseUser) likes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                    if (likes.get(i).getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
                         likes.get(i).deleteInBackground();
                         updateLikes();
                         return;
@@ -119,7 +119,7 @@ public class DetailActivity extends AppCompatActivity {
                 } else {
                     Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart).into(ivLike);
                     for (int i = 0; i < newLikes.size(); i++) {
-                        if (((ParseUser) newLikes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        if (newLikes.get(i).getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
                             Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart_active).into(ivLike);
                         }
                     }
@@ -130,6 +130,7 @@ public class DetailActivity extends AppCompatActivity {
         });
 
     }
+
     public void onLogOutClick(MenuItem item) {
         ParseUser.logOut();
         ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
@@ -152,19 +153,19 @@ public class DetailActivity extends AppCompatActivity {
         postQuery.addDescendingOrder("createdAt");
         postQuery.whereEqualTo(ParseComment.POST, post);
         postQuery.findInBackground(new FindCallback<ParseComment>() {
-                                       @Override
-                                       public void done(List<ParseComment> newParseComments, ParseException e) {
-                                           if (e != null) {
-                                               Log.e("DetailActivity", e.toString());
-                                           } else {
-                                                   comments.addAll(newParseComments);
-                                                   tvComments.setText(String.valueOf(comments.size()));
-                                                   adapter.notifyDataSetChanged();
-                                               }
-                                           }
-                                       });
-                                   }
-
-
+            @Override
+            public void done(List<ParseComment> newParseComments, ParseException e) {
+                if (e != null) {
+                    Log.e("DetailActivity", e.toString());
+                } else {
+                    comments.addAll(newParseComments);
+                    tvComments.setText(String.valueOf(comments.size()));
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
+
+
+}
 

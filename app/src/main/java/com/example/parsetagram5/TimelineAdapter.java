@@ -18,17 +18,21 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder>{
+public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
+    ViewHolder viewHolder;
     private List<Post> posts;
     private Context context;
-    ViewHolder viewHolder;
+
     public TimelineAdapter(List<Post> posts) {
         this.posts = posts;
 
     }
+
     @NonNull
     @Override
     public TimelineAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,6 +47,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         // get the data according to position
+        final List<Like> likes = new ArrayList<>();
         final Post post = posts.get(position);
         holder.tvUsername.setText(post.getUser().getUsername());
         holder.tvCaption.setText(post.getDescription());
@@ -58,13 +63,42 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
                 } else {
                     Glide.with(holder.ivLike.getContext()).load(R.drawable.ufi_heart).into(holder.ivLike);
                     for (int i = 0; i < newLikes.size(); i++) {
-                        if (((ParseUser) newLikes.get(i).getUser()).getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        if (newLikes.get(i).getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
                             Glide.with(holder.ivLike.getContext()).load(R.drawable.ufi_heart_active).into(holder.ivLike);
                         }
                     }
+                    likes.addAll(newLikes);
                 }
             }
         });
+        holder.ivLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < likes.size(); i++) {
+                    if (likes.get(i).getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                        likes.get(i).deleteInBackground();
+                        updateLikes(post, likes, holder.ivLike);
+                        return;
+                    }
+                }
+                Like like = new Like();
+                like.setUser(ParseUser.getCurrentUser());
+                like.setPost(post);
+                like.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            return;
+                        } else {
+                            Log.d("DETAIL_ACTIVITY", "Success");
+                            updateLikes(post, likes, holder.ivLike);
+                        }
+                    }
+                });
+            }
+        });
+
 
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +134,32 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void updateLikes(Post post, final List<Like> likes, final ImageView ivLike) {
+        ParseQuery<Like> query = new ParseQuery<Like>(Like.class);
+        query.whereEqualTo(Like.POST, post);
+
+        query.findInBackground(new FindCallback<Like>() {
+            @Override
+            public void done(List<Like> newLikes, ParseException e) {
+                if (e != null) {
+                    Log.e("DetailActivity", e.toString());
+                } else {
+                    Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart).into(ivLike);
+                    for (int i = 0; i < newLikes.size(); i++) {
+                        if (newLikes.get(i).getUser().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                            Glide.with(ivLike.getContext()).load(R.drawable.ufi_heart_active).into(ivLike);
+                        }
+                    }
+                    likes.removeAll(likes);
+                    likes.addAll(newLikes);
+                }
+
+            }
+        });
+
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivComment;
         public ImageView ivImage;
@@ -120,8 +180,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             tvDate = itemView.findViewById(R.id.tvDate);
 
         }
-
-
 
 
     }

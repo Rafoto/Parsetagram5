@@ -25,6 +25,7 @@ public class ProfileFragment extends TimelineFragment {
     public ProfileFragment() {
 
     }
+
     @Override
     protected void queryPosts(final boolean isFirstTime) {
         ParseQuery<Post> postQuery = new ParseQuery<Post>(Post.class);

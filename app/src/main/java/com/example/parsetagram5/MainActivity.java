@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     Button btnSignup;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,51 +37,52 @@ public class MainActivity extends AppCompatActivity {
             showLoginScreen();
         }
     }
-    private void showLoginScreen(){
-            setContentView(R.layout.activity_main);
-            tvUsername = findViewById(R.id.tvUsername);
-            tvEmail = findViewById(R.id.tvEmail);
-            tvPassword = findViewById(R.id.tvPassword);
-            btnLogin = findViewById(R.id.btnLogin);
-            btnSignup = findViewById(R.id.btnSignup);
 
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ParseUser.logInInBackground(tvUsername.getText().toString(), tvPassword.getText().toString(), new LogInCallback() {
-                        public void done(ParseUser user, ParseException e) {
-                            if (user != null) {
-                                Intent intent = new Intent(context, TimelineActivity.class);
-                                intent.putExtra("Username", tvUsername.getText());
-                                context.startActivity(intent);
-                            } else {
-                                Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                }
-            });
-        btnSignup.setOnClickListener(new View.OnClickListener() {
+    private void showLoginScreen() {
+        setContentView(R.layout.activity_main);
+        tvUsername = findViewById(R.id.tvUsername);
+        tvEmail = findViewById(R.id.tvEmail);
+        tvPassword = findViewById(R.id.tvPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        btnSignup = findViewById(R.id.btnSignup);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser user = new ParseUser();
-                user.setUsername(tvUsername.getText().toString());
-                user.setPassword(tvPassword.getText().toString());
-                user.signUpInBackground(new SignUpCallback() {
-                    public void done(ParseException e) {
-                        if (e == null) {
+                ParseUser.logInInBackground(tvUsername.getText().toString(), tvPassword.getText().toString(), new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        if (user != null) {
                             Intent intent = new Intent(context, TimelineActivity.class);
                             intent.putExtra("Username", tvUsername.getText());
                             context.startActivity(intent);
                         } else {
-                            Toast.makeText(context, "Sign Up Failed: " + e.toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-
             }
-        }
+        });
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View view) {
+                                             ParseUser user = new ParseUser();
+                                             user.setUsername(tvUsername.getText().toString());
+                                             user.setPassword(tvPassword.getText().toString());
+                                             user.signUpInBackground(new SignUpCallback() {
+                                                 public void done(ParseException e) {
+                                                     if (e == null) {
+                                                         Intent intent = new Intent(context, TimelineActivity.class);
+                                                         intent.putExtra("Username", tvUsername.getText());
+                                                         context.startActivity(intent);
+                                                     } else {
+                                                         Toast.makeText(context, "Sign Up Failed: " + e.toString(), Toast.LENGTH_LONG).show();
+                                                     }
+                                                 }
+                                             });
+
+                                         }
+                                     }
         );
-            }
-
     }
+
+}

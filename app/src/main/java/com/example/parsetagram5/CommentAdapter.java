@@ -18,9 +18,9 @@ import com.parse.ParseUser;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
+    CommentAdapter.ViewHolder viewHolder;
     private List<ParseObject> comments;
     private Context context;
-    CommentAdapter.ViewHolder viewHolder;
 
     public CommentAdapter(List<ParseObject> comments) {
         this.comments = comments;
@@ -42,11 +42,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         // get the data according to position
 
         final ParseObject comment = comments.get(position);
-        holder.tvUsername.setText(((ParseObject)comment.get("user")).getString("username"));
+        holder.tvUsername.setText(((ParseObject) comment.get("user")).getString("username"));
         holder.tvCaption.setText(comment.getString("description"));
         holder.tvDate.setText(comment.getCreatedAt().toString());
-        if (((ParseUser)comment.get("user")).get("profilePicture") != null) {
-            Glide.with(context).load(((ParseFile) (((ParseUser)comment.get("user")).get("profilePicture"))).getUrl()).into(holder.ivUsericon);
+        if (((ParseUser) comment.get("user")).get("profilePicture") != null) {
+            Glide.with(context).load(((ParseFile) (((ParseUser) comment.get("user")).get("profilePicture"))).getUrl()).into(holder.ivUsericon);
         }
 
     }

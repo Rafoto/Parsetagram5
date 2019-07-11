@@ -34,9 +34,9 @@ import java.util.List;
  */
 public class TimelineFragment extends Fragment {
     public final String APP_TAG = "Parsetagram5";
-    RecyclerView rvTimeline;
     protected TimelineAdapter timelineAdapter;
     protected List<Post> posts;
+    RecyclerView rvTimeline;
     Context context;
     SwipeRefreshLayout swipeContainer;
     private OnFragmentInteractionListener mListener;
@@ -73,7 +73,7 @@ public class TimelineFragment extends Fragment {
         rvTimeline.setLayoutManager(linearLayoutManager);
         rvTimeline.setAdapter(timelineAdapter);
         queryPosts(true);
-        swipeContainer = ((SwipeRefreshLayout)view.findViewById(R.id.swipeContainer));
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -120,24 +120,24 @@ public class TimelineFragment extends Fragment {
         postQuery.include(Post.KEY_USER);
         postQuery.addDescendingOrder(Post.DATE);
         postQuery.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> newPosts, ParseException e) {
-                if (e != null) {
-                    Log.e(APP_TAG, e.toString());
-                } else {
-                    if (!isFirstTime) {
-                        for (int i = posts.size(); i < newPosts.size(); i++) {
-                            posts.add(newPosts.get(i));
-                            timelineAdapter.notifyItemChanged(i);
-                        }
-                    } else {
-                        posts.clear();
-                        posts.addAll(newPosts);
-                        timelineAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-            }
+                                       @Override
+                                       public void done(List<Post> newPosts, ParseException e) {
+                                           if (e != null) {
+                                               Log.e(APP_TAG, e.toString());
+                                           } else {
+                                               if (!isFirstTime) {
+                                                   for (int i = posts.size(); i < newPosts.size(); i++) {
+                                                       posts.add(newPosts.get(i));
+                                                       timelineAdapter.notifyItemChanged(i);
+                                                   }
+                                               } else {
+                                                   posts.clear();
+                                                   posts.addAll(newPosts);
+                                                   timelineAdapter.notifyDataSetChanged();
+                                               }
+                                           }
+                                       }
+                                   }
         );
     }
 
