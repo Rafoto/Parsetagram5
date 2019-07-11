@@ -173,7 +173,7 @@ public class DetailActivity extends AppCompatActivity {
                     Log.e("DetailActivity", e.toString());
                 } else {
                     comments.addAll(newParseComments);
-                    tvComments.setText(String.valueOf(comments.size()));
+                    tvComments.setText(String.valueOf(comments.size() + 1));
                     adapter.notifyDataSetChanged();
                 }
             }

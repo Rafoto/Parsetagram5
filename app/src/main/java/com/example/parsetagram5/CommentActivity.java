@@ -48,7 +48,8 @@ public class CommentActivity extends AppCompatActivity {
                             return;
                         } else {
                             Log.d("CommentFragment", "Success");
-                            Intent intent = new Intent(context, TimelineActivity.class);
+                            Intent intent = new Intent(context, DetailActivity.class);
+                            intent.putExtra("post", post);
                             startActivity(intent);
                         }
                     }
