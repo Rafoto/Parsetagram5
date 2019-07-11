@@ -12,6 +12,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
     public static final String DATE = "createdAt";
+    public static final String USERS_WHO_LIKED = "userWhoLiked";
 
     public ParseFile getMedia() {
         return getParseFile("media");
@@ -46,5 +47,9 @@ public class Post extends ParseObject {
     }
     public void setMedia(ParseFile parseFile) {
         put("media", parseFile);
+    }
+
+    public void addLike(ParseUser user) {
+
     }
 }

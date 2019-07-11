@@ -43,7 +43,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.tvCaption.setText(post.getDescription());
         holder.tvDate.setText(post.getDate());
         Glide.with(context).load(post.getImage().getUrl()).into(holder.ivImage);
-        holder.tvUsername.setOnClickListener(new View.OnClickListener() {
+        holder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DetailActivity.class);

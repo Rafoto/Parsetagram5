@@ -1,6 +1,7 @@
 package com.example.parsetagram5;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,7 +68,13 @@ public class CommentFragment extends DialogFragment {
         editComment = container.findViewById(R.id.editComment);
         getDialog().setTitle("Create a Comment");
         editComment.requestFocus();
-
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), TimelineActivity.class);
+                startActivity(intent);
+            }
+        });
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

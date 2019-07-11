@@ -35,7 +35,7 @@ public class CommentActivity extends AppCompatActivity {
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseObject comment = ParseComment.create("Comment");
+                ParseObject comment = ParseComment.create("ParseComment");
                 comment.put("description", editComment.getText().toString());
                 comment.put("user", ParseUser.getCurrentUser());
                 comment.put("post", post);
