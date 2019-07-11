@@ -1,13 +1,17 @@
 package com.example.parsetagram5;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +43,7 @@ public class DetailActivity extends AppCompatActivity {
     Post post;
     List<ParseObject> comments;
     List<Like> likes;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +64,9 @@ public class DetailActivity extends AppCompatActivity {
         tvCaption.setText(post.getDescription());
         tvDate.setText(post.getDate());
         comments = new ArrayList<ParseObject>();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         setComments(post);
         likes = new ArrayList<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -121,6 +129,20 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void onLogOutClick(MenuItem item) {
+        ParseUser.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    // Menu icons are inflated just as they were with actionbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_small_menu, menu);
+        return true;
     }
 
     public void setComments(Post post) {

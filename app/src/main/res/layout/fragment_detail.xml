@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     android:paddingBottom="8dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/action_bar_semi_transparent_white"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:logo="@drawable/nav_logo_whiteout" />
+
     <ImageView
         android:id="@+id/ivComment"
         android:layout_width="25dp"
@@ -45,8 +57,10 @@
         android:id="@+id/ivUsericon"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:srcCompat="@android:drawable/star_big_off"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -54,6 +68,7 @@
         android:id="@+id/tvUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
@@ -62,7 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivUsericon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/tvDate"
@@ -73,8 +88,10 @@
         android:text="Date"
         app:layout_constraintBottom_toBottomOf="@+id/ivUsericon"
         app:layout_constraintEnd_toEndOf="@+id/tvUsername"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvUsername"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvCaption"
